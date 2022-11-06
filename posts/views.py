@@ -9,7 +9,7 @@ def index(request):
     }
     return render(request , 'index.html',context)
 
-def singePost(request , pk):
+def singlePost(request , pk):
     post = Posts.objects.get(id=pk)
     context = {
         'post':post
