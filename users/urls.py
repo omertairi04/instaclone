@@ -8,4 +8,5 @@ urlpatterns = [
     path('logout/',views.UserLogOut ,name='logout'),
 
     path('profile/<str:pk>/',views.viewProfile ,name='profile'),
+    path('edit-profile/', views.editProfile , name='edit-profile'),
 ]

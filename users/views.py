@@ -5,14 +5,32 @@ from django.contrib.auth.models import User
 from django.contrib import messages
 
 from users.models import Profile
-from .forms import CustomUserCreationForm
+from .forms import CustomUserCreationForm , ProfileForm
+from posts.models import Posts
 
 def viewProfile(request , pk):
     profile = Profile.objects.get(id=pk)
+    posts = profile.posts_set.all()
+
     context = {
         'profile':profile,
+        'posts':posts
     }
     return render(request, 'users/profile.html',context)
+
+@login_required(login_url='login')
+def editProfile(request):
+    profile = request.user.profile
+    form = ProfileForm(instance=profile)
+    if request.method == 'POST':
+        form = ProfileForm(request.POST , request.FILES , instance=profile)
+        if form.is_valid():
+            form.save()
+            return redirect('index')
+    context = {
+        'form':form
+    }
+    return render(request , 'users/editProfile.html',context)
 
 def register(request):
     form = CustomUserCreationForm()
