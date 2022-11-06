@@ -15,6 +15,9 @@
     <h5>{{post.location}}</h5>
     {% endif %}
     <p>{{post.created}}</p>
+    {% if post.owner == request.user.profile %}
+        <a href="{% url 'edit' post.id %}">Edit Post</a>
+    {% endif %}
     </a>
     <p><a href="{% url 'profile' post.owner.id %}">{{post.owner}}</a></p>
     {% endfor %}
