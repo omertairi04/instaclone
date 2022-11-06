@@ -1,0 +1,16 @@
+{% load static %}
+
+<div class="topnav">
+    <a class="active" href="{% url 'index' %}">Home</a>
+    <a href="#explore">Explore</a>
+    <a href="#info">Info</a>
+    <div class="login">
+    {% if user.is_authenticated %}
+        <a href="profile.html">{{user.username}}</a>
+        <a href="{% url 'logout' %}">Log Out</a>
+    {% else %}
+        <a href="{% url 'register' %}">Register</a>
+        <a href="{% url 'login' %}">Log In</a>
+    {% endif %}
+    </div>
+</div> 

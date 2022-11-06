@@ -1,0 +1,8 @@
+{% extends 'main.html' %}
+
+{% block title %}View {{profile.username}} profile{% endblock title %}
+
+{% block content %}
+<img src="{{profile.profile_image.url}}" alt="">
+<h3>{{profile.username}}</h3>
+{% endblock content %}
