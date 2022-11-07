@@ -4,7 +4,7 @@
 
 {% block content %}
 Edit {{ post.title }}
-<form method="POST" action="" enctype="multipart/form-data">
+<form method="POST" action="{% url 'index' %}" enctype="multipart/form-data">
     {% csrf_token %}
     {{form.as_p}}
     <input type="submit" value="Delete Post" />
