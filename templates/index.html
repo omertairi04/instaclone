@@ -17,6 +17,7 @@
     <p>{{post.created}}</p>
     {% if post.owner == request.user.profile %}
         <a href="{% url 'edit' post.id %}">Edit Post</a>
+        <a href="{% url 'delete' post.id %}">Delete Post</a>
     {% endif %}
     </a>
     <p><a href="{% url 'profile' post.owner.id %}">{{post.owner}}</a></p>

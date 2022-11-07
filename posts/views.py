@@ -50,3 +50,11 @@ def editPost(request , pk):
         'form':form
     }
     return render(request , 'posts/editPost.html',context)
+
+@login_required(login_url='login')
+def deletePost(request , pk):
+    post = Posts.objects.get(id=pk)
+    post.delete()
+    return redirect('index')
+    return render(request , 'posts/delete.html')
+
