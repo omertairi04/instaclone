@@ -1,20 +1,34 @@
 from django.shortcuts import render , redirect
 from django.contrib.auth.decorators import login_required
 from django.core.paginator import Paginator
+from django.db.models import Q
 
 from .models import Posts
 from .forms import PostForm
 
 def index(request):
-    posts = Posts.objects.all()
+    search_query = ''
+
+    if request.GET.get('search_query'): # 'search_query' emri i inputit name
+        search_query = request.GET.get('search_query')
+
+    posts = Posts.objects.distinct().filter(
+        Q(title__icontains=search_query) |
+        Q(caption__icontains = search_query) |
+        #Parentmodel__field__icontains=
+        Q(owner__name__icontains=search_query)
+    )
+
     paginator = Paginator(posts , 2)
 
     page_number = request.GET.get('page')
     page_obj = paginator.get_page(page_number)
+
     context = {
         'posts':posts,
         'paginator':paginator,
-        'page_obj':page_obj
+        'page_obj':page_obj,
+        'search_query':search_query,
     }
     return render(request , 'index.html',context)
 
