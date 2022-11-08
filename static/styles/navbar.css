@@ -23,6 +23,10 @@
     float: right;
   }
   
+  .login .create {
+    margin-right: 15px;
+  }
+  
   /* Change the color of links on hover */
   .topnav a:hover {
     color: black;

@@ -4,10 +4,10 @@
     <div class="topnav">
         <a class="active" href="/">Home</a>
         <a href="">Explore</a>
-        <a href="">Games</a>
+        <a href="">Games</a><div class="hero-section__search">
         <div class="login">
             {% if user.is_authenticated %}
-                <a href="create/">Create</a>
+                <a class="create" href="create/">Create</a>
                 {% if user.profile.id %}
                     <div id="mySidenav" class="sidenav">
                         <p>Welcome {{ user.username }}</p>
@@ -21,7 +21,7 @@
                       <!-- Use any element to open the sidenav -->
                     <span onclick="openNav()">
                         {% if user.profile.profile_image %}
-                        <img src="{{ user.profile.profile_image.url }}" class="rounded-circle" width="50" height="50">
+                        <img src="{{ user.profile.profile_image.url }}" width="50" height="50">
                         {% else %}
                         <img src="{% static 'GProfile/images/pfp.jpg' %}" class="rounded-circle" width="50" height="50">
                         {% endif %}
