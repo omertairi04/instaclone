@@ -3,24 +3,44 @@
 
 {% block content %}
 
-    <h1>Welcome to instagram clone!</h1>
-    {% for post in posts %}
+    {% for post in page_obj %}
     <a href="{% url 'singlePost' post.id %}">
-    <img src="{{post.post_image.url}}" />
-    <h2>{{post.title}}</h2>
-    {% if post.caption %}
-    <p>{{post.caption}}</p>
-    {% endif %}
-    {% if post.location %}
-    <h5>{{post.location}}</h5>
-    {% endif %}
-    <p>{{post.created}}</p>
-    {% if post.owner == request.user.profile %}
-        <a href="{% url 'edit' post.id %}">Edit Post</a>
-        <a href="{% url 'delete' post.id %}">Delete Post</a>
-    {% endif %}
-    </a>
-    <p><a href="{% url 'profile' post.owner.id %}">{{post.owner}}</a></p>
+        <img src="{{post.post_image.url}}" width=480 height="720" />
+        <h2>{{post.title}}</h2>
+        {% if post.caption %}
+        <p>{{post.caption}}</p>
+        {% endif %}
+        {% if post.location %}
+        <h5>{{post.location}}</h5>
+        {% endif %}
+        <p>{{post.created}}</p>
+        {% if post.owner == request.user.profile %}
+            <a href="{% url 'edit' post.id %}">Edit Post</a>
+            <a href="{% url 'delete' post.id %}">Delete Post</a>
+        {% endif %}
+        </a>
+        <p><a href="{% url 'profile' post.owner.id %}">{{post.owner}}</a></p>
     {% endfor %}
+
+    <div class="pagination">
+        <span class="step-links">
+            {% if page_obj.has_previous %}
+                <a href="?page=1">&laquo; first</a>
+                <a href="?page={{page.obj.previous_page_number}}">previous</a>
+            {% endif %}
+
+            <span class="current">
+                Page {{ page_obj.number }} of 
+                {{ page_obj.paginator.num_pages }}
+            </span>
+
+            {% if page_obj.has_next %}
+                <a href="?page={{ page_obj.next_page_number }}">next</a>
+                <a href="?page={{ page_obj.paginator.num_pages}}">
+                    last &raquo;
+                </a>
+            {% endif %}
+        </span>
+    </div>
 
 {% endblock content %}
