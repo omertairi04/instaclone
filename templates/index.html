@@ -18,6 +18,8 @@
             <a href="{% url 'edit' post.id %}">Edit Post</a>
             <a href="{% url 'delete' post.id %}">Delete Post</a>
         {% endif %}
+        <br>
+        <a href="{% url 'like' post.id %}">Like {{post.likes}}</a>
         </a>
         <p><a href="{% url 'profile' post.owner.id %}">{{post.owner}}</a></p>
     {% endfor %}

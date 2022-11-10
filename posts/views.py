@@ -1,9 +1,11 @@
 from django.shortcuts import render , redirect
+from django.http import HttpResponseRedirect
 from django.contrib.auth.decorators import login_required
 from django.core.paginator import Paginator
 from django.db.models import Q
+from django.urls import reverse
 
-from .models import Posts
+from .models import Posts , Likes
 from .forms import PostForm
 
 def index(request):
@@ -31,6 +33,23 @@ def index(request):
         'search_query':search_query,
     }
     return render(request , 'index.html',context)
+
+def like(request , pk):
+    user = request.user
+    post = Posts.objects.get(id=pk)
+    current_likes = post.likes
+    liked = Likes.objects.filter(user=user , post=post).count()
+    if not liked:
+        liked = Likes.objects.create(user=user , post=post)
+        current_likes = current_likes + 1
+    else:
+        liked = Likes.objects.filter(user=user , post=post).delete()
+        current_likes = current_likes - 1
+    post.likes = current_likes
+    post.save()
+
+    return HttpResponseRedirect(reverse('index'))
+
 
 def singlePost(request , pk):
     post = Posts.objects.get(id=pk)
