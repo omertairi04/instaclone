@@ -19,11 +19,11 @@
             <a href="{% url 'delete' post.id %}">Delete Post</a>
         {% endif %}
         <br>
-        {% if post.owner == user %}
+        {% if post.owner == request.user.profile %}
             <p>You cant like your own post</p>
         {% else %}
             {% if request.user.is_authenticated %}
-            <form method="POST">
+            <form method="POST" action="?search_query={{search_query}}&page={{page}}">
                 {% csrf_token %}
                 <a name="next" href="{% url 'like' post.id %}">Like {{post.likes}}</a>
             </form>

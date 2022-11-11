@@ -9,7 +9,6 @@ from .models import Posts , Likes , Comment
 from .forms import PostForm , CommentForm
 
 def index(request):
-    user = request.user.profile
     search_query = ''
 
     if request.GET.get('search_query'): # 'search_query' emri i inputit name
@@ -27,8 +26,9 @@ def index(request):
     page_number = request.GET.get('page')
     page_obj = paginator.get_page(page_number)
 
+    next = request.GET.get('next' , '/')
+
     context = {
-        'user':user,
         'posts':posts,
         'paginator':paginator,
         'page_obj':page_obj,
@@ -50,10 +50,10 @@ def like(request , pk ):
     post.likes = current_likes
     post.save()
 
-    next = request.GET.get('next' , '/')
+    #next = request.GET.get('next' , '/')
+    next = request.GET['next'] if 'next' in request.GET else '/'
 
-    return redirect(next)
-
+    return HttpResponseRedirect(next)
 
 def singlePost(request , pk):
     post = Posts.objects.get(id=pk)
