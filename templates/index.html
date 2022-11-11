@@ -19,8 +19,19 @@
             <a href="{% url 'delete' post.id %}">Delete Post</a>
         {% endif %}
         <br>
-        <a href="{% url 'like' post.id %}">Like {{post.likes}}</a>
-        </a>
+        {% if post.owner == user %}
+            <p>You cant like your own post</p>
+        {% else %}
+            {% if request.user.is_authenticated %}
+            <form method="POST">
+                {% csrf_token %}
+                <a name="next" href="{% url 'like' post.id %}">Like {{post.likes}}</a>
+            </form>
+            {% else %}
+                <a href="{% url 'login' %}">Log In to like this post </a>
+            </a>
+            {% endif %}
+        {% endif %}
         <p><a href="{% url 'profile' post.owner.id %}">{{post.owner}}</a></p>
     {% endfor %}
 

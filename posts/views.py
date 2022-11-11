@@ -5,10 +5,11 @@ from django.core.paginator import Paginator
 from django.db.models import Q
 from django.urls import reverse
 
-from .models import Posts , Likes
-from .forms import PostForm
+from .models import Posts , Likes , Comment
+from .forms import PostForm , CommentForm
 
 def index(request):
+    user = request.user.profile
     search_query = ''
 
     if request.GET.get('search_query'): # 'search_query' emri i inputit name
@@ -27,6 +28,7 @@ def index(request):
     page_obj = paginator.get_page(page_number)
 
     context = {
+        'user':user,
         'posts':posts,
         'paginator':paginator,
         'page_obj':page_obj,
@@ -34,7 +36,7 @@ def index(request):
     }
     return render(request , 'index.html',context)
 
-def like(request , pk):
+def like(request , pk ):
     user = request.user
     post = Posts.objects.get(id=pk)
     current_likes = post.likes
@@ -48,15 +50,32 @@ def like(request , pk):
     post.likes = current_likes
     post.save()
 
-    return HttpResponseRedirect(reverse('index'))
+    next = request.GET.get('next' , '/')
+
+    return redirect(next)
 
 
 def singlePost(request , pk):
     post = Posts.objects.get(id=pk)
+    comments = post.comment_set.all()
+    commentForm = CommentForm()
+
+    if request.method == 'POST':
+        commentForm = CommentForm(request.POST)
+        if commentForm.is_valid():
+            comment = commentForm.save(commit=False)
+            comment.post = post
+            comment.user = request.user
+            comment.save()
+
+        return redirect('singlePost' , pk=post.id)
+
     context = {
-        'post':post
+        'post':post,
+        'comments':comments,
+        'commentForm':commentForm
     }
-    return render(request,'posts/singePost.html',context)
+    return render(request,'posts/singelPost.html',context)
 
 @login_required(login_url='login')
 def createPost(request):

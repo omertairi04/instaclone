@@ -11,13 +11,27 @@ class Posts(models.Model):
     location = models.ForeignKey('Location' , on_delete=models.CASCADE,blank=True , null=True)
     post_image = models.ImageField(default='')
     likes = models.IntegerField(default=0)
-    # comments
+    comments = models.ForeignKey('Comment',on_delete=models.CASCADE,null=True,blank=True)
     created = models.DateTimeField(auto_now_add = True)
     id = models.UUIDField(default=uuid.uuid4 , unique=True , 
                         primary_key=True , editable=False)
 
     def __str__(self):
         return self.title
+
+    class Meta:
+        ordering = ['-created']
+
+class Comment(models.Model):
+    user = models.ForeignKey(User , null=True,blank=True , on_delete=models.CASCADE)
+    post = models.ForeignKey(Posts ,null=True,blank=True , on_delete=models.CASCADE)
+    body = models.TextField()
+    created = models.DateTimeField(auto_now_add = True)
+    id = models.UUIDField(default=uuid.uuid4 , unique=True , 
+                        primary_key=True , editable=False)
+
+    def __str__(self):
+        return self.body
 
 class Location(models.Model):
     city = models.CharField(max_length=255,blank=True , null=True)

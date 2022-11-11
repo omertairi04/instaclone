@@ -9,7 +9,7 @@
 <h1>POSTS</h1>
 {% for post in posts %}
 <a href="{% url 'singlePost' post.id %}">
-    <img src="{{post.post_image.url}}" />
+    <img src="{{post.post_image.url}}" width="1250" height="auto" />
     <h2>{{post.title}}</h2>
     {% if post.caption %}
     <p>{{post.caption}}</p>

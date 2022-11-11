@@ -81,4 +81,4 @@ def logInUser(request):
 
 def UserLogOut(request):
     logout(request)
-    return redirect('index')
+    return redirect('login')

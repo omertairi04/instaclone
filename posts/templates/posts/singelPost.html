@@ -12,4 +12,16 @@
 {% endif %}
 <p>{{post.created}}</p>
 <p><a href="profile.html">{{post.owner}}</a></p>
+
+<h2>Comments</h2>
+{% for comment in comments %}
+    <p>{{comment}}</p>
+{% endfor %}
+<form action="" method="post">
+    {% csrf_token %}
+    {{ commentForm.as_p }}
+    <input type="submit" value="comment">
+</form>
+
+
 {% endblock content %}
